@@ -139,6 +139,13 @@ class LanchoneteService:
             Pedido encontrado ou None.
         """
         return db.pedidos_por_codigo.get(cod_pedido)
+    def cancelar_pedido(self, cod_pedido: int) -> bool:
+        pedido = db.pedidos_por_codigo.get(cod_pedido)
+        if not pedido:
+            return False
+        return pedido.cancelar()
 
+    def listar_pedidos_cancelados(self):
+        return [pedido for pedido in db.pedidos_por_codigo.values() if pedido.esta_cancelado]
 
 service = LanchoneteService()

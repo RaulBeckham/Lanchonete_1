@@ -33,10 +33,11 @@ class Pedido:
         self.qtd_max_produtos = int(qtd_max_produtos)
         self.listaProdutos: List[Produto] = []
         self.esta_entregue: bool = False
+        self.esta_cancelado = False
 
         if self.qtd_max_produtos <= 0:
             raise ValueError("Quantidade máxima deve ser maior que zero")
-
+        
     @property
     def codigo(self) -> int:
         """Código único e imutável do pedido."""
@@ -54,6 +55,17 @@ class Pedido:
         if len(self.listaProdutos) >= self.qtd_max_produtos:
             return False
         self.listaProdutos.append(produto)
+        return True
+
+    def cancelar(self) -> bool:
+        """Cancela o pedido se ele ainda não foi entregue ou cancelado."""
+        if self.esta_entregue:
+            return False
+
+        if self.esta_cancelado:
+            return False
+
+        self.esta_cancelado = True
         return True
 
     def finalizar(self) -> float:
